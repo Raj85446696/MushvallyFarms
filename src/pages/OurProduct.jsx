@@ -1,6 +1,6 @@
-import React from 'react';
-import Navbar from '../components/Navbar';
-import Footor from '../components/Footor';
+import React from "react";
+import Navbar from "../components/Navbar";
+import Footor from "../components/Footor";
 import oystermushroomimg from "../assets/oystermushroom.jpg";
 import roseimg from "../assets/rose.jpg";
 import jasmineimg from "../assets/jasmin.png";
@@ -12,46 +12,65 @@ const products = [
   {
     id: 1,
     title: "Oystor Mushrooms",
+    description:
+      "Delicious and tender oyster mushrooms, freshly harvested and rich in nutrients.",
     price: 250,
     rating: 4.5,
     image: oystermushroomimg,
+    category: "Mushrooms",
   },
   {
     id: 2,
     title: "Rose",
+    description:
+      "Beautifully cultivated fresh roses, perfect for decoration and fragrance.",
     price: 200,
     rating: 4,
     image: roseimg,
+    category: "Flowers",
   },
   {
     id: 3,
     title: "Jasmin",
+    description:
+      "Fresh jasmine flowers known for their calming aroma and traditional use.",
     price: 180,
     rating: 4.8,
     image: jasmineimg,
+    category: "Flowers",
   },
   {
     id: 4,
     title: "Hibiscus",
+    description:
+      "Vibrant hibiscus flowers, ideal for teas and natural beauty treatments.",
     price: 180,
     rating: 4.8,
     image: hibiscusimg,
+    category: "Flowers",
   },
   {
     id: 5,
     title: "Dry Rose",
+    description:
+      "Naturally dried rose petals suitable for potpourri, tea blends, and skincare.",
     price: 180,
     rating: 4.8,
     image: dryroseimg,
+    category: "Dried Flowers",
   },
   {
     id: 6,
     title: "Dry Ginger",
+    description:
+      "Premium dry ginger slices packed with aroma and medicinal properties.",
     price: 180,
     rating: 4.8,
     image: drygingerimg,
-  },
+    category: "Spices",
+  }
 ];
+
 
 function StarRating({ rating }) {
   const fullStars = Math.floor(rating);
@@ -61,70 +80,75 @@ function StarRating({ rating }) {
   return (
     <div className="flex items-center space-x-1 text-green-700 mt-1">
       {[...Array(fullStars)].map((_, i) => (
-        <svg key={i} className="w-6 h-6 fill-current" viewBox="0 0 20 20" aria-hidden="true">
+        <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 20 20" aria-hidden="true">
           <path d="M10 15l-5.878 3.09 1.123-6.545L.49 6.91l6.562-.955L10 0l2.948 5.955 6.562.955-4.755 4.635 1.123 6.545z" />
         </svg>
       ))}
       {halfStar && (
-        <svg className="w-6 h-6 fill-current" viewBox="0 0 20 20" aria-hidden="true">
+        <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20" aria-hidden="true">
           <defs>
             <linearGradient id="halfGrad">
               <stop offset="50%" stopColor="currentColor" />
               <stop offset="50%" stopColor="transparent" />
             </linearGradient>
           </defs>
-          <path fill="url(#halfGrad)" d="M10 15l-5.878 3.09 1.123-6.545L.49 6.91l6.562-.955L10 0l2.948 5.955 6.562.955-4.755 4.635 1.123 6.545z" />
+          <path
+            fill="url(#halfGrad)"
+            d="M10 15l-5.878 3.09 1.123-6.545L.49 6.91l6.562-.955L10 0l2.948 5.955 6.562.955-4.755 4.635 1.123 6.545z"
+          />
         </svg>
       )}
       {[...Array(emptyStars)].map((_, i) => (
-        <svg key={i} className="w-6 h-6 fill-gray-300" viewBox="0 0 20 20" aria-hidden="true">
+        <svg key={i} className="w-5 h-5 fill-gray-300" viewBox="0 0 20 20" aria-hidden="true">
           <path d="M10 15l-5.878 3.09 1.123-6.545L.49 6.91l6.562-.955L10 0l2.948 5.955 6.562.955-4.755 4.635 1.123 6.545z" />
         </svg>
       ))}
     </div>
   );
 }
+
 function OurProduct() {
   return (
     <>
       <Navbar />
-      <main className="bg-[#f3ede2] min-h-screen py-20 px-10 md:px-16">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-10 text-[#3e2f26] text-center">
+      <main className="bg-[#f3ede2] min-h-screen py-12 px-4 md:px-10">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-3xl md:text-4xl font-extrabold mb-10 text-[#3e2f26] text-center tracking-wide">
             Our Products
           </h1>
-          <div className="grid gap-15 md:grid-cols-3">
-            {products.map(({ id, title, price, rating, image }) => (
+
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map(({ id, title, description, price, rating, image }) => (
               <div
                 key={id}
-                className="relative flex flex-col bg-white rounded-2xl shadow-md overflow-hidden transform transition-all duration-500 hover:scale-105 hover:shadow-xl"
+                className="bg-white rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-400 flex flex-col overflow-hidden"
               >
-                {/* Accent background */}
-                <div className="absolute inset-0 bg-gradient-to-b from-[#d9b382]/10 to-transparent rounded-2xl z-0"></div>
-
-                {/* Product Image */}
-                <div className="relative w-full h-50 overflow-hidden rounded-t-2xl">
+                {/* Image */}
+                <div className="relative h-48 sm:h-52 overflow-hidden">
                   <img
                     src={image}
                     alt={title}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                   />
                 </div>
 
-                {/* Product Details */}
-                <div className="p-6 flex flex-col flex-grow z-10 relative">
-                  <h2 className="text-2xl font-semibold text-[#3e2f26] mb-2">{title}</h2>
-                  <div className="mt-4 flex items-center justify-between">
-                    <span className="bg-gradient-to-r from-[#d9b382] to-[#b7c6a0] text-[#3e2f26] font-bold px-3 py-1 rounded-full text-lg">
-                      ₹{price}/kg
-                    </span>
-                  </div>
+                {/* Details */}
+                <div className="flex flex-col flex-grow p-4">
+                  <h2 className="text-lg md:text-xl font-semibold text-[#3e2f26] mb-1">
+                    {title}
+                  </h2>
+                  {description && (
+                    <p className="text-sm text-[#5a4b3f] mb-3 leading-snug line-clamp-2">
+                      {description}
+                    </p>
+                  )}
                   <StarRating rating={rating} />
-                  <div className="mt-4 flex flex-col sm:flex-row gap-3">
-                    <button className="flex-1 bg-gradient-to-r from-[#d9b382] to-[#b7c6a0] text-[#3e2f26] font-semibold py-3 rounded-lg hover:from-[#b7c6a0] hover:to-[#d9b382] hover:scale-105 transition-all duration-300">
-                      Add to Cart
-                    </button>
-                    <button className="flex-1 bg-[#3e2f26] text-[#f3ede2] font-semibold py-3 rounded-lg hover:bg-[#2b251f] hover:scale-105 transition-all duration-300">
+
+                  <div className="mt-4 flex items-center justify-between">
+                    <span className="bg-gradient-to-r from-[#d9b382] to-[#b7c6a0] text-[#3e2f26] font-bold px-3 py-1 text-sm rounded-full">
+                      ₹{price} / kg
+                    </span>
+                    <button className="bg-[#3e2f26] text-[#f3ede2] font-medium py-2 px-4 text-sm rounded-md hover:bg-[#2b251f] hover:scale-105 transition-all duration-300">
                       Buy Now
                     </button>
                   </div>
