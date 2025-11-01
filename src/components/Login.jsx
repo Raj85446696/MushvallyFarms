@@ -44,7 +44,8 @@ function Login() {
           : { phone: identity, password };
 
         const response = await fetch(
-          "https://mushvallyfarmsbackend.onrender.com/user/login",
+          "http://localhost:8000/user/login",
+          // "https://mushvallyfarmsbackend.onrender.com/user/login",
           {
             method: "POST",
             headers: {
@@ -120,7 +121,7 @@ function Login() {
                 className={`w-full border-b border-[#b7c6a0] focus:border-[#d9b382] bg-transparent py-2 outline-none transition ${
                   errors.identity && submitted ? "border-red-400" : ""
                 }`}
-                placeholder="you@example.com or +911234567890"
+                placeholder="email or phone "
                 value={identity}
                 onChange={(e) => {
                   setIdentity(e.target.value);
