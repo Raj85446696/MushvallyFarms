@@ -9,6 +9,7 @@ import OurProduct from './pages/OurProduct';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import ProtectedRoute from './components/ProtectedRoute';
+import MyOrder from './pages/MyOrder';
 function App() {
   return (
     <>
@@ -21,16 +22,9 @@ function App() {
         <Route path="/ourblog" element={<OurBlog />} />
 
         {/* ✅ Protected Route */}
-        <Route
-          path="/ourproduct"
-          element={
-            <ProtectedRoute>
-              <OurProduct />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/ourproduct" element={<ProtectedRoute><OurProduct /></ProtectedRoute>} />
+        <Route path='/myorder' element={<ProtectedRoute><MyOrder/></ProtectedRoute>}/>
       </Routes>
-
     </>
   )
 }

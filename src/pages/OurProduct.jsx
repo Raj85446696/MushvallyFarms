@@ -36,53 +36,54 @@ function OurProduct() {
   };
 
   const handleOrder = async () => {
-    const userId = "672f1ab6e4c95f2dc98f342a"; // ⚠️ Replace with logged-in user ID from your app or localStorage
-
-    const orderData = {
-      userId, // required by backend
-      orderItems: [
-        {
-          name: selectedProduct.title,
-          qty: quantities[selectedProduct.id],
-          image: selectedProduct.image,
-          price: selectedProduct.price,
-          product: "672f1ab6e4c95f2dc98f343b" // ⚠️ Replace with actual MongoDB Product ID
-        },
-      ],
-      shippingAddress: {
-        address: address.address,
-        city: address.city,
-        postalCode: address.postalCode,
-        country: address.country,
-      },
-      paymentMethod: "Razorpay", // required field
-      totalPrice: selectedProduct.price * quantities[selectedProduct.id],
-    };
-
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Please login first!", { position: "top-center" });
+        return;
+      }
+
+      const orderData = {
+        orderItems: [
+          {
+            name: selectedProduct.title,
+            qty: quantities[selectedProduct.id],
+            image: selectedProduct.image,
+            price: selectedProduct.price,
+            product: "672f1ab6e4c95f2dc98f343b", // replace with actual product ID from DB
+          },
+        ],
+        shippingAddress: address,
+        paymentMethod: "Razorpay",
+        totalPrice: selectedProduct.price * quantities[selectedProduct.id],
+      };
+
+      // http://localhost:8000/user/order
       const res = await fetch("https://mushvallyfarmsbackend.onrender.com/user/order", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(orderData),
       });
-
       const data = await res.json();
-
-      if (data?.order?.id) {
+      if (data && data.order && data.order.id) {
         openRazorpayPopup(data.order);
       } else {
-        alert("❌ Failed to create Razorpay order");
+        toast.error(`❌ Failed to create Razorpay order: ${data.message || "Unknown error"}`, {
+          position: "top-center",
+        });
       }
 
       setShowModal(false);
     } catch (error) {
       console.error("Order Error:", error);
-      alert("❌ Something went wrong!");
+      toast.error("❌ Something went wrong while creating the order!", { position: "top-center" });
     }
   };
-
-
   const openRazorpayPopup = (order) => {
+    const token = localStorage.getItem("token");
     const options = {
       key: "rzp_test_RZbWROZOjz6zOD",
       amount: order.amount,
@@ -91,32 +92,57 @@ function OurProduct() {
       description: selectedProduct.title,
       image: "/logo.png",
       order_id: order.id,
+
       handler: async function (response) {
-        toast.success("✅ Payment Successful!", {
+        toast.success("Payment Successful!", {
           position: "top-center",
-          autoClose: 3000,
+          autoClose: 2000,
         });
+        try {
+          // http://localhost:8000/user/verify
+          const verifyRes = await fetch("https://mushvallyfarmsbackend.onrender.com/user/verify", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            }),
+          });
 
+          const verifyData = await verifyRes.json();
 
-        // verify payment
-        await fetch("https://mushvallyfarmsbackend.onrender.com/user/verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(response),
-        });
+          if (verifyData.success) {
+            toast.success("order marked as paid!", {
+              position: "top-center",
+              autoClose: 3000,
+            });
+          } else {
+            toast.error(`❌ Payment verification failed: ${verifyData.message}`, {
+              position: "top-center",
+            });
+          }
+        } catch (err) {
+          console.error("Verification Error:", err);
+          toast.error("❌ Error verifying payment!", { position: "top-center" });
+        }
       },
+
       prefill: {
-        name: "Rituraj Kumar",
-        email: "ritu@example.com",
+        name: "Ritu Raj Kumar",
+        email: "rituraj@example.com",
         contact: "9999999999",
       },
       notes: { address: address.address },
       theme: { color: "#3e2f26" },
     };
-
     const rzp = new window.Razorpay(options);
     rzp.open();
   };
+
 
   return (
     <>

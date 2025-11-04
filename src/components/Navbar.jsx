@@ -69,6 +69,12 @@ const Navbar = () => {
               Our Product
             </a>
 
+            {isLoggedIn && (
+              <a href="/myorder" className="hover:text-[#d9b382] transition">
+                My Orders
+              </a>
+            )}
+
             {isLoggedIn ? (
               <div className="flex items-center gap-4">
                 {/* Logout Button */}
@@ -147,6 +153,12 @@ const Navbar = () => {
           <a href="/ourproduct" className="block py-2 hover:text-[#d9b382] transition">
             Our Product
           </a>
+
+          {isLoggedIn && (
+              <a href="/myorder" className="block py-2 hover:text-[#d9b382] transition">
+                My Orders
+              </a>
+            )}
 
           {isLoggedIn ? (
             <>
