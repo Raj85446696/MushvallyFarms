@@ -58,9 +58,7 @@ function Signup() {
 
     if (Object.keys(errs).length === 0) {
       try {
-        // Send POST request to your backend
-        // http://localhost:8000/user/signup
-        const response = await fetch("https://mushvallyfarmsbackend.onrender.com/user/signup", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/signup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -10,6 +10,11 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import ProtectedRoute from './components/ProtectedRoute';
 import MyOrder from './pages/MyOrder';
+import Admin from './pages/Admin';
+import AddProduct from './pages/AddProduct';
+import ListProduct from './pages/ListProduct';
+import ListOrder from './pages/ListOrder';
+import Unauthorized from './pages/Unauthorized';
 function App() {
   return (
     <>
@@ -21,10 +26,56 @@ function App() {
         <Route path="/aboutus" element={<Aboutus />} />
         <Route path="/ourblog" element={<OurBlog />} />
 
-        {/* ✅ Protected Route */}
-        <Route path="/ourproduct" element={<ProtectedRoute><OurProduct /></ProtectedRoute>} />
-        <Route path='/myorder' element={<ProtectedRoute><MyOrder/></ProtectedRoute>}/>
+        {/* ✅ User routes */}
+        <Route path="/ourproduct" element={
+            <ProtectedRoute allowedRoles={["user", "admin"]}>
+              <OurProduct />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/myorder" element={
+            <ProtectedRoute allowedRoles={["user", "admin"]}>
+              <MyOrder />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ✅ Admin routes */}
+        <Route path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/admin/addproduct"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AddProduct />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/admin/products"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <ListProduct />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/admin/orders"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <ListOrder />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/unauthorized" element={<Unauthorized />} />
       </Routes>
+      
     </>
   )
 }

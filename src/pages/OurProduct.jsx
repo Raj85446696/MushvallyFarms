@@ -57,9 +57,7 @@ function OurProduct() {
         paymentMethod: "Razorpay",
         totalPrice: selectedProduct.price * quantities[selectedProduct.id],
       };
-
-      // http://localhost:8000/user/order
-      const res = await fetch("https://mushvallyfarmsbackend.onrender.com/user/order", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,8 +97,7 @@ function OurProduct() {
           autoClose: 2000,
         });
         try {
-          // http://localhost:8000/user/verify
-          const verifyRes = await fetch("https://mushvallyfarmsbackend.onrender.com/user/verify", {
+          const verifyRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/verify`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
