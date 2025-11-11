@@ -43,8 +43,7 @@ function Login() {
         const payload = isEmail(identity)
           ? { email: identity, password }
           : { phone: identity, password };
-        // `${import.meta.env.VITE_BACKEND_URL}/user/login`
-        const response = await fetch('https://mushvallyfarmsbackend.onrender.com/user/login', {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
