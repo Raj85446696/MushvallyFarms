@@ -14,13 +14,32 @@ function ListOrder() {
     const fetchOrders = async () => {
       try {
         setLoading(true);
+
+        // Get token from localStorage
+        const token = localStorage.getItem('token');
+
+        // If no token, redirect to login
+        if (!token) {
+          window.location.href = '/login';
+          return;
+        }
+
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/admin/orders`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Add authorization header
           },
           credentials: 'include',
         });
+
+        if (response.status === 401) {
+          // Token expired or invalid
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/login';
+          return;
+        }
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -55,7 +74,7 @@ function ListOrder() {
         setOrders(transformedOrders);
       } catch (error) {
         console.error('Error fetching orders:', error);
-        
+
         // Fallback mock data
         const mockOrders = [
           {
@@ -90,7 +109,7 @@ function ListOrder() {
             shippingAddress: '456 Oak Ave, Los Angeles, CA'
           },
         ];
-        
+
         setOrders(mockOrders);
         toast.error('Failed to load orders. Using demo data.');
       } finally {
@@ -104,8 +123,8 @@ function ListOrder() {
   const filteredOrders = orders.filter(order => {
     const matchesStatus = filterStatus === 'all' || order.deliveredStatus === filterStatus;
     const matchesSearch = order.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.shippingAddress.toLowerCase().includes(searchTerm.toLowerCase());
+      order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.shippingAddress.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesStatus && matchesSearch;
   });
 
@@ -215,7 +234,7 @@ function ListOrder() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
@@ -229,7 +248,7 @@ function ListOrder() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
@@ -243,7 +262,7 @@ function ListOrder() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
@@ -268,13 +287,12 @@ function ListOrder() {
                     <button
                       key={status}
                       onClick={() => setFilterStatus(status)}
-                      className={`px-3 py-2 rounded-lg font-medium transition-all duration-200 text-sm ${
-                        filterStatus === status
-                          ? status === 'all' 
+                      className={`px-3 py-2 rounded-lg font-medium transition-all duration-200 text-sm ${filterStatus === status
+                          ? status === 'all'
                             ? 'bg-[#8B7355] text-white shadow-md'
                             : `text-${status === 'pending' ? 'amber' : status === 'shipped' ? 'blue' : status === 'delivered' ? 'emerald' : 'red'}-700 bg-${status === 'pending' ? 'amber' : status === 'shipped' ? 'blue' : status === 'delivered' ? 'emerald' : 'red'}-100 border border-${status === 'pending' ? 'amber' : status === 'shipped' ? 'blue' : status === 'delivered' ? 'emerald' : 'red'}-300`
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-sm'
-                      }`}
+                        }`}
                     >
                       {status === 'all' ? 'All Orders' : status.charAt(0).toUpperCase() + status.slice(1)}
                     </button>
@@ -339,7 +357,7 @@ function ListOrder() {
                                 </span>
                               </div>
                               <p className="text-xs text-gray-500 line-clamp-2 mb-2">{order.shippingAddress}</p>
-                              
+
                               <div className="flex items-center gap-4 text-sm">
                                 <div>
                                   <span className="font-medium text-gray-700">Amount:</span>
@@ -353,7 +371,7 @@ function ListOrder() {
                             </div>
                           </div>
                         </div>
-                        
+
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-2">
                             <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(order.deliveredStatus)}`}>
@@ -364,7 +382,7 @@ function ListOrder() {
                               💳 {order.paymentStatus}
                             </span>
                           </div>
-                          
+
                           <div className="flex flex-col items-end gap-2">
                             <div className="text-right">
                               <div className="text-sm text-gray-600">{formatDate(order.createdAt)}</div>
