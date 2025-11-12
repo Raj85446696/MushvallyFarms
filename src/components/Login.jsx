@@ -43,6 +43,7 @@ function Login() {
         const payload = isEmail(identity)
           ? { email: identity, password }
           : { phone: identity, password };
+
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {
           method: "POST",
           headers: {
@@ -55,12 +56,15 @@ function Login() {
         const data = await response.json();
 
         if (response.ok) {
-          // ✅ Save user and token in localStorage
           localStorage.setItem("user", JSON.stringify(data.user));
           localStorage.setItem("token", data.token);
 
           toast.success("Login successful! 🎉");
-          navigate("/");
+          if (data.user.role === "admin") {
+            navigate("/admin");
+          } else {
+            navigate("/");
+          }
         } else {
           toast.error(data.message || "Invalid credentials ❌");
         }
@@ -70,6 +74,7 @@ function Login() {
       }
     }
   }
+
 
   return (
     <>
@@ -118,9 +123,8 @@ function Login() {
                 </label>
                 <input
                   type="text"
-                  className={`w-full border-b border-[#b7c6a0] focus:border-[#d9b382] bg-transparent py-2 outline-none transition ${
-                    errors.identity && submitted ? "border-red-400" : ""
-                  }`}
+                  className={`w-full border-b border-[#b7c6a0] focus:border-[#d9b382] bg-transparent py-2 outline-none transition ${errors.identity && submitted ? "border-red-400" : ""
+                    }`}
                   placeholder="email or phone "
                   value={identity}
                   onChange={(e) => {
@@ -143,9 +147,8 @@ function Login() {
                 </label>
                 <input
                   type="password"
-                  className={`w-full border-b border-[#b7c6a0] focus:border-[#d9b382] bg-transparent py-2 outline-none transition ${
-                    errors.password && submitted ? "border-red-400" : ""
-                  }`}
+                  className={`w-full border-b border-[#b7c6a0] focus:border-[#d9b382] bg-transparent py-2 outline-none transition ${errors.password && submitted ? "border-red-400" : ""
+                    }`}
                   placeholder="Enter password"
                   value={password}
                   onChange={(e) => {
