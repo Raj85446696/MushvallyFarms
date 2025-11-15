@@ -49,7 +49,7 @@ function Login() {
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include", // include cookies (for JWT)
+          credentials: "include",
           body: JSON.stringify(payload),
         });
 

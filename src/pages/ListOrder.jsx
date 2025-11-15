@@ -174,12 +174,56 @@ function ListOrder() {
 
   const handleStatusUpdate = async (orderId, newStatus) => {
     try {
-      // Simulate API call
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        toast.error('Authentication required');
+        window.location.href = '/login';
+        return;
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/admin/orders/${orderId}/deliver`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            status: newStatus // Send the new status in the request body
+          }),
+          credentials: 'include',
+        }
+      );
+
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Update local state only after successful API call
       setOrders(prev => prev.map(order =>
-        order._id === orderId ? { ...order, deliveredStatus: newStatus } : order
+        order._id === orderId ? {
+          ...order,
+          deliveredStatus: newStatus,
+          // If marking as delivered, you might want to update other fields
+          ...(newStatus === 'delivered' && {
+            paymentStatus: 'paid', // Assuming delivered orders are paid
+          })
+        } : order
       ));
+
       toast.success(`Order status updated to ${newStatus}`);
+
     } catch (error) {
+      console.error('Error updating order status:', error);
       toast.error('Failed to update order status');
     }
   };
@@ -282,15 +326,19 @@ function ListOrder() {
             <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 md:p-6 mb-6">
               <div className="flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center">
                 {/* Status Filter */}
+                {/* Status Filter - Updated to only show available options */}
                 <div className="flex gap-2 flex-wrap">
-                  {['all', 'pending', 'shipped', 'delivered', 'cancelled'].map(status => (
+                  {['all', 'pending', 'delivered'].map(status => (
                     <button
                       key={status}
                       onClick={() => setFilterStatus(status)}
                       className={`px-3 py-2 rounded-lg font-medium transition-all duration-200 text-sm ${filterStatus === status
                           ? status === 'all'
                             ? 'bg-[#8B7355] text-white shadow-md'
-                            : `text-${status === 'pending' ? 'amber' : status === 'shipped' ? 'blue' : status === 'delivered' ? 'emerald' : 'red'}-700 bg-${status === 'pending' ? 'amber' : status === 'shipped' ? 'blue' : status === 'delivered' ? 'emerald' : 'red'}-100 border border-${status === 'pending' ? 'amber' : status === 'shipped' ? 'blue' : status === 'delivered' ? 'emerald' : 'red'}-300`
+                            : `text-${status === 'pending' ? 'amber' : 'emerald'
+                            }-700 bg-${status === 'pending' ? 'amber' : 'emerald'
+                            }-100 border border-${status === 'pending' ? 'amber' : 'emerald'
+                            }-300`
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-sm'
                         }`}
                     >
@@ -391,12 +439,11 @@ function ListOrder() {
                             <select
                               value={order.deliveredStatus}
                               onChange={(e) => handleStatusUpdate(order._id, e.target.value)}
-                              className="text-xs border border-gray-300 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#8B7355] focus:border-[#8B7355] bg-white"
+                              className="text-xs border border-gray-300 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#8B7355] focus:border-[#8B7355] bg-white hover:bg-gray-50 transition-colors"
                             >
                               <option value="pending">Pending</option>
-                              <option value="shipped">Shipped</option>
                               <option value="delivered">Delivered</option>
-                              <option value="cancelled">Cancelled</option>
+                              {/* Remove other options if your API only supports these two */}
                             </select>
                           </div>
                         </div>
@@ -474,9 +521,8 @@ function ListOrder() {
                             className="text-xs border border-gray-300 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#8B7355] focus:border-[#8B7355] bg-white hover:bg-gray-50 transition-colors"
                           >
                             <option value="pending">Pending</option>
-                            <option value="shipped">Shipped</option>
                             <option value="delivered">Delivered</option>
-                            <option value="cancelled">Cancelled</option>
+                            {/* Remove other options if your API only supports these two */}
                           </select>
                         </div>
                       </div>
