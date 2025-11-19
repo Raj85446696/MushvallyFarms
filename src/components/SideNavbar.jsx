@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Link, useLocation } from 'react-router-dom'
 
 function SideNavbar() {
+    const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [adminData, setAdminData] = useState({
         name: 'Admin User',
@@ -115,7 +117,7 @@ function SideNavbar() {
                 {/* Sidebar Header */}
                 <div className="p-4 border-b border-[#A88C6D] flex-shrink-0">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-bold text-white">Admin Panel</h2>
+                        <h2 className="text-xl font-bold text-white cursor-pointer" onClick={()=>navigate('/admin')}>Admin Panel</h2>
                         <button
                             onClick={closeSidebar}
                             className="lg:hidden text-[#F5E6D3] hover:text-white"

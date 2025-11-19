@@ -191,7 +191,7 @@ function ListOrder() {
             'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify({
-            status: newStatus // Send the new status in the request body
+            status: newStatus 
           }),
           credentials: 'include',
         }

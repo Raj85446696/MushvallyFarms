@@ -7,8 +7,10 @@ import hibiscusimg from "../assets/hibiscus.jpg";
 import dryroseimg from "../assets/dryrose.png";
 import drygingerimg from "../assets/dryginger.jpg";
 import Footor from "../components/Footor";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
   const slides = [
     {
       id: 1,
@@ -111,13 +113,13 @@ function Home() {
           </p>
 
           <div className="mt-8 md:mt-12 flex flex-wrap justify-center gap-4 sm:gap-6 px-2">
-            <button className="bg-gradient-to-r from-[#cfa86e] to-[#b98b4f] text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-2xl md:hover:shadow-3xl hover:scale-105 transition-all duration-300 font-semibold flex items-center gap-2 sm:gap-3 group text-sm sm:text-base">
+            <button className="bg-gradient-to-r from-[#cfa86e] to-[#b98b4f] text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-2xl md:hover:shadow-3xl hover:scale-105 transition-all duration-300 font-semibold flex items-center gap-2 sm:gap-3 group text-sm sm:text-base" onClick={()=>navigate('/ourproduct')}>
               <span>Explore Collection</span>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
             </button>
-            <button className="border-2 border-[#cfa86e] text-[#5a4638] px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl md:rounded-2xl hover:bg-[#f8f3ea] hover:border-[#b98b4f] transition-all duration-300 font-semibold hover:scale-105 text-sm sm:text-base">
+            <button className="border-2 border-[#cfa86e] text-[#5a4638] px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl md:rounded-2xl hover:bg-[#f8f3ea] hover:border-[#b98b4f] transition-all duration-300 font-semibold hover:scale-105 text-sm sm:text-base" onClick={()=>navigate('/aboutus')}>
               Our Story
             </button>
           </div>
@@ -301,7 +303,7 @@ function Home() {
           <p className="text-base sm:text-lg md:text-xl text-[#3e2f26] max-w-3xl mx-auto mb-6 md:mb-8 lg:mb-10 leading-relaxed px-2">
             Join us in transforming the world with products that blend nature, sustainability, and style for a better tomorrow.
           </p>
-          <button className="bg-gradient-to-r from-[#2d231b] to-[#3e2f26] text-[#f3ede2] px-8 sm:px-10 md:px-12 py-3 sm:py-4 md:py-5 rounded-xl md:rounded-2xl font-bold text-base md:text-lg transition-all duration-300 transform hover:-translate-y-1 md:hover:-translate-y-2 hover:scale-105 hover:shadow-xl md:hover:shadow-2xl hover:shadow-[#cfa86e]/40 group">
+          <button className="bg-gradient-to-r from-[#2d231b] to-[#3e2f26] text-[#f3ede2] px-8 sm:px-10 md:px-12 py-3 sm:py-4 md:py-5 rounded-xl md:rounded-2xl font-bold text-base md:text-lg transition-all duration-300 transform hover:-translate-y-1 md:hover:-translate-y-2 hover:scale-105 hover:shadow-xl md:hover:shadow-2xl hover:shadow-[#cfa86e]/40 group" onClick={()=>navigate('/ourproduct')}>
             <span className="flex items-center gap-2 sm:gap-3">
               Shop Now
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">

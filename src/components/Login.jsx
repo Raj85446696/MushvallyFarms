@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SubNavbar from "./SubNavbar";
 import { toast } from "react-toastify";
@@ -29,7 +29,6 @@ function Login() {
     }
     return err;
   }
-
   // ✅ Handle Login
   async function handleSubmit(e) {
     e.preventDefault();
@@ -74,7 +73,6 @@ function Login() {
       }
     }
   }
-
 
   return (
     <>

@@ -9,6 +9,7 @@ import OurProduct from './pages/OurProduct';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import ProtectedRoute from './components/ProtectedRoute';
+import PublicRoute from './components/PublicRoute';
 import MyOrder from './pages/MyOrder';
 import Admin from './pages/Admin';
 import AddProduct from './pages/AddProduct';
@@ -20,25 +21,50 @@ function App() {
     <>
       <ToastContainer position="top-right" autoClose={1500} theme="colored" />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/aboutus" element={<Aboutus />} />
-        <Route path="/ourblog" element={<OurBlog />} />
+        <Route path="/" element={
+          <PublicRoute>
+            <Home />
+          </PublicRoute>
+        } />
+
+        <Route path="/login" element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        } />
+
+        <Route path="/signup" element={
+          <PublicRoute>
+            <Signup />
+          </PublicRoute>
+        } />
+
+        <Route path="/aboutus" element={
+          <PublicRoute>
+            <Aboutus />
+          </PublicRoute>
+        } />
+
+        <Route path="/ourblog" element={
+          <PublicRoute>
+            <OurBlog />
+          </PublicRoute>
+        } />
+
 
         {/* ✅ User routes */}
         <Route path="/ourproduct" element={
-            <ProtectedRoute allowedRoles={["user", "admin"]}>
-              <OurProduct />
-            </ProtectedRoute>
-          }
+          <ProtectedRoute allowedRoles={["user"]}>
+            <OurProduct />
+          </ProtectedRoute>
+        }
         />
 
         <Route path="/myorder" element={
-            <ProtectedRoute allowedRoles={["user", "admin"]}>
-              <MyOrder />
-            </ProtectedRoute>
-          }
+          <ProtectedRoute allowedRoles={["user"]}>
+            <MyOrder />
+          </ProtectedRoute>
+        }
         />
 
         {/* ✅ Admin routes */}
@@ -75,7 +101,7 @@ function App() {
         />
         <Route path="/unauthorized" element={<Unauthorized />} />
       </Routes>
-      
+
     </>
   )
 }
