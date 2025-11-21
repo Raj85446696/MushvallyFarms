@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { toast } from "react-toastify";
+// Import your logo
+import logo from "../assets/mushvalleyfarmslogo.png";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     setIsLoggedIn(false);
-    toast.info("You’ve been logged out successfully 👋");
+    toast.info("You've been logged out successfully 👋");
     navigate("/");
   };
 
@@ -41,37 +43,54 @@ const Navbar = () => {
     <nav className="bg-[#3e2f26] text-[#f3ede2] shadow-lg transition-all duration-500">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          {/* Logo */}
+          {/* Logo and Brand - Professional Version */}
           <div
-            className="flex flex-col leading-tight cursor-pointer"
+            className="flex items-center cursor-pointer group"
             onClick={() => navigate("/")}
           >
-            <span className="text-2xl font-bold text-[#d9b382]">
-              Mushvalley Farms
-            </span>
-            <span className="text-xs text-[#b7c6a0] tracking-wide">
-              Since 2025
-            </span>
+            {/* Logo Image with professional styling */}
+            <div className="relative flex-shrink-0">
+              <img
+                src={logo}
+                alt="Mushvalley Farms Logo"
+                className="w-20 h-20 object-contain transition-all duration-300 group-hover:scale-105"
+              />
+            </div>
+            
+            {/* Brand Text with professional typography */}
+            <div className="flex flex-col leading-tight">
+              <span className="text-2xl font-bold text-[#d9b382] tracking-tight font-serif group-hover:text-[#e5c9a1] transition-colors duration-300">
+                Mushvalley Farms
+              </span>
+              <span className="text-xs font-cursive text-[#b7c6a0] tracking-wider mt-0.5">
+                Since <span className="italic">2025</span>
+              </span>
+            </div>
           </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8 items-center">
-            <a href="/" className="hover:text-[#d9b382] transition">
+            <a href="/" className="hover:text-[#d9b382] transition font-medium relative group">
               Home
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#d9b382] transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <a href="/aboutus" className="hover:text-[#d9b382] transition">
+            <a href="/aboutus" className="hover:text-[#d9b382] transition font-medium relative group">
               About Us
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#d9b382] transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <a href="/ourblog" className="hover:text-[#d9b382] transition">
+            <a href="/ourblog" className="hover:text-[#d9b382] transition font-medium relative group">
               Our Blog
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#d9b382] transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <a href="/ourproduct" className="hover:text-[#d9b382] transition">
+            <a href="/ourproduct" className="hover:text-[#d9b382] transition font-medium relative group">
               Our Product
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#d9b382] transition-all duration-300 group-hover:w-full"></span>
             </a>
 
             {isLoggedIn && (
-              <a href="/myorder" className="hover:text-[#d9b382] transition">
+              <a href="/myorder" className="hover:text-[#d9b382] transition font-medium relative group">
                 My Orders
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#d9b382] transition-all duration-300 group-hover:w-full"></span>
               </a>
             )}
 
@@ -80,15 +99,15 @@ const Navbar = () => {
                 {/* Logout Button */}
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-400 text-white px-4 py-2 rounded-full font-semibold hover:scale-105 transition-transform duration-300 shadow-md"
+                  className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-500 text-white px-5 py-2.5 rounded-full font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300 shadow-md"
                 >
-                  <LogOut className="w-5 h-5" />
+                  <LogOut className="w-4 h-4" />
                   Logout
                 </button>
               </div>
             ) : (
               <button
-                className="bg-[#b7c6a0] text-[#3e2f26] px-4 py-2 rounded-full font-semibold hover:bg-[#a2b58a] transition"
+                className="bg-gradient-to-r from-[#b7c6a0] to-[#a8ba8f] text-[#3e2f26] px-6 py-2.5 rounded-full font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300 shadow-md"
                 onClick={() => navigate("/login")}
               >
                 Login
@@ -101,8 +120,9 @@ const Navbar = () => {
             <button
               ref={btnRef}
               onClick={handleMobileMenuClick}
-              className={`focus:outline-none relative overflow-hidden transition-transform duration-300 ease-in-out ${isOpen ? "rotate-90 scale-110" : "rotate-0 scale-100"
-                }`}
+              className={`focus:outline-none relative overflow-hidden transition-all duration-300 ease-in-out ${
+                isOpen ? "rotate-90 scale-110 bg-[#4a392f]" : "rotate-0 scale-100"
+              } p-2 rounded-lg`}
               style={{ width: 38, height: 38 }}
               aria-label="Open menu"
             >
@@ -135,43 +155,44 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden bg-[#3e2f26] origin-top transform transition-all duration-500 ease-in-out ${isOpen
-            ? "max-h-80 opacity-100 scale-y-100"
+        className={`md:hidden bg-[#3e2f26] border-t border-[#4a392f] origin-top transform transition-all duration-500 ease-in-out ${
+          isOpen
+            ? "max-h-96 opacity-100 scale-y-100"
             : "max-h-0 opacity-0 scale-y-0"
-          } overflow-hidden`}
+        } overflow-hidden`}
       >
-        <div className="space-y-2 px-4 pb-4 pt-2">
-          <a href="/" className="block py-2 hover:text-[#d9b382] transition">
+        <div className="space-y-1 px-4 pb-4 pt-2">
+          <a href="/" className="block py-3 px-4 hover:text-[#d9b382] hover:bg-[#4a392f] rounded-lg transition-all duration-300 font-medium">
             Home
           </a>
-          <a href="/aboutus" className="block py-2 hover:text-[#d9b382] transition">
+          <a href="/aboutus" className="block py-3 px-4 hover:text-[#d9b382] hover:bg-[#4a392f] rounded-lg transition-all duration-300 font-medium">
             About Us
           </a>
-          <a href="/ourblog" className="block py-2 hover:text-[#d9b382] transition">
+          <a href="/ourblog" className="block py-3 px-4 hover:text-[#d9b382] hover:bg-[#4a392f] rounded-lg transition-all duration-300 font-medium">
             Our Blog
           </a>
-          <a href="/ourproduct" className="block py-2 hover:text-[#d9b382] transition">
+          <a href="/ourproduct" className="block py-3 px-4 hover:text-[#d9b382] hover:bg-[#4a392f] rounded-lg transition-all duration-300 font-medium">
             Our Product
           </a>
 
           {isLoggedIn && (
-              <a href="/myorder" className="block py-2 hover:text-[#d9b382] transition">
-                My Orders
-              </a>
-            )}
+            <a href="/myorder" className="block py-3 px-4 hover:text-[#d9b382] hover:bg-[#4a392f] rounded-lg transition-all duration-300 font-medium">
+              My Orders
+            </a>
+          )}
 
           {isLoggedIn ? (
             <>
               <button
                 onClick={handleLogout}
-                className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-red-500 to-red-400 text-white py-2 rounded-full font-semibold hover:scale-105 transition-transform duration-300 shadow-md"
+                className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-red-600 to-red-500 text-white py-3 rounded-lg font-semibold hover:scale-105 transition-transform duration-300 shadow-md mt-2"
               >
                 <LogOut className="w-5 h-5" /> Logout
               </button>
             </>
           ) : (
             <button
-              className="w-full bg-[#b7c6a0] text-[#3e2f26] py-2 rounded-full font-semibold hover:bg-[#a2b58a] transition-all duration-300"
+              className="w-full bg-gradient-to-r from-[#b7c6a0] to-[#a8ba8f] text-[#3e2f26] py-3 rounded-lg font-semibold hover:scale-105 transition-all duration-300 shadow-md mt-2"
               onClick={() => navigate("/login")}
             >
               Login

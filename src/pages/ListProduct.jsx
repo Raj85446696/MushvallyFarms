@@ -36,6 +36,7 @@ function ListProduct() {
             image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150',
             price: 99.99,
             stock: 45,
+            weight: 250, // Added weight field
             category: 'Electronics',
             createdAt: '2024-01-15T10:30:00Z',
             updatedAt: '2024-01-20T14:25:00Z'
@@ -47,6 +48,7 @@ function ListProduct() {
             image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=150',
             price: 29.99,
             stock: 100,
+            weight: 180, // Added weight field
             category: 'Clothing',
             createdAt: '2024-01-10T08:15:00Z',
             updatedAt: '2024-01-18T11:20:00Z'
@@ -198,13 +200,14 @@ function ListProduct() {
 
             {/* Products Grid */}
             <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-              {/* Desktop Table Header - Hidden on mobile */}
+              {/* Desktop Table Header */}
               <div className="hidden md:grid md:grid-cols-12 gap-4 p-4 md:p-6 border-b border-gray-200 font-semibold text-gray-700 text-sm">
-                <div className="md:col-span-4 lg:col-span-5">Product</div>
-                <div className="md:col-span-2 text-center">Price</div>
+                <div className="md:col-span-4 lg:col-span-4">Product</div>
+                <div className="md:col-span-1 text-center">Price</div>
                 <div className="md:col-span-2 text-center">Stock</div>
-                <div className="md:col-span-2 lg:col-span-1 text-center">Updated</div>
-                <div className="md:col-span-2 text-center">Actions</div>
+                <div className="md:col-span-2 text-center">Weight</div>
+                <div className="md:col-span-2 text-center">Updated</div>
+                <div className="md:col-span-1 text-center">Actions</div>
               </div>
 
               {/* Products List */}
@@ -258,32 +261,45 @@ function ListProduct() {
                               <div className="text-gray-900">{product.stock} units</div>
                             </div>
                             <div>
+                              <span className="font-medium text-gray-700">Weight:</span>
+                              <div className="text-gray-900">{product.weight || 'N/A'} gm</div>
+                            </div>
+                            <div>
                               <span className="font-medium text-gray-700">Updated:</span>
                               <div className="text-gray-900 text-xs">{formatDate(product.updatedAt)}</div>
                             </div>
-                            <div className="flex items-center justify-end gap-2">
-                              <button
-                                onClick={() => handleDelete(product._id)}
-                                disabled={isDeleting}
-                                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
-                                title="Delete Product"
-                              >
-                                {isDeleting ? (
-                                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600"></div>
-                                ) : (
-                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                  </svg>
-                                )}
-                              </button>
-                            </div>
+                          </div>
+                          <div className="flex items-center justify-end gap-2 pt-2">
+                            <button
+                              onClick={() => navigate(`/admin/editproduct/${product._id}`)}
+                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              title="Edit Product"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                              </svg>
+                            </button>
+                            <button
+                              onClick={() => handleDelete(product._id)}
+                              disabled={isDeleting}
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                              title="Delete Product"
+                            >
+                              {isDeleting ? (
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600"></div>
+                              ) : (
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                              )}
+                            </button>
                           </div>
                         </div>
 
                         {/* Desktop Layout */}
                         <div className="hidden md:grid md:grid-cols-12 gap-4 items-center">
                           {/* Product Info */}
-                          <div className="md:col-span-4 lg:col-span-5 flex items-center gap-4">
+                          <div className="md:col-span-4 lg:col-span-4 flex items-center gap-4">
                             <img
                               src={product.image}
                               alt={product.name}
@@ -292,14 +308,16 @@ function ListProduct() {
                             <div className="min-w-0 flex-1">
                               <h3 className="font-semibold text-gray-800 truncate">{product.name}</h3>
                               <p className="text-sm text-gray-500 truncate">{product.description}</p>
-                              <span className="inline-block px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full mt-1">
-                                {product.category}
-                              </span>
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                <span className="inline-block px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full">
+                                  {product.category}
+                                </span>
+                              </div>
                             </div>
                           </div>
 
                           {/* Price */}
-                          <div className="md:col-span-2 flex items-center justify-center">
+                          <div className="md:col-span-1 flex items-center justify-center">
                             <span className="font-semibold text-gray-800">₹{product.price}</span>
                           </div>
 
@@ -310,8 +328,15 @@ function ListProduct() {
                             </span>
                           </div>
 
+                          {/* Weight */}
+                          <div className="md:col-span-2 flex items-center justify-center">
+                            <span className="text-gray-800 font-medium">
+                              {product.weight || 'N/A'} gm
+                            </span>
+                          </div>
+
                           {/* Last Updated */}
-                          <div className="md:col-span-2 lg:col-span-1 flex items-center justify-center">
+                          <div className="md:col-span-2 flex items-center justify-center">
                             <div className="text-center">
                               <div className="text-sm text-gray-600">
                                 {formatDate(product.updatedAt)}
@@ -320,7 +345,16 @@ function ListProduct() {
                           </div>
 
                           {/* Actions */}
-                          <div className="md:col-span-2 flex items-center justify-center gap-2">
+                          <div className="md:col-span-1 flex items-center justify-center gap-1">
+                            <button
+                              onClick={() => navigate(`/admin/editproduct/${product._id}`)}
+                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              title="Edit Product"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                              </svg>
+                            </button>
                             <button
                               onClick={() => handleDelete(product._id)}
                               disabled={isDeleting}

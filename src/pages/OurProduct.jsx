@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footor from "../components/Footor";
-import { Plus, Minus, X } from "lucide-react";
+import { Plus, Minus, X, Weight } from "lucide-react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,6 +13,7 @@ function OurProduct() {
   const [address, setAddress] = useState({ address: "", city: "", postalCode: "", country: "" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -71,6 +72,7 @@ function OurProduct() {
             qty: quantities[selectedProduct._id],
             image: selectedProduct.image,
             price: selectedProduct.price,
+            weight:selectedProduct.weight,
             product: selectedProduct._id, 
           },
         ],
@@ -219,34 +221,65 @@ function OurProduct() {
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {products.map((p) => (
                 <div
-                  key={p._id} // Use _id from API
+                  key={p._id}
                   className="bg-white rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all flex flex-col overflow-hidden"
                 >
                   <div className="relative h-48 overflow-hidden">
                     <img 
                       src={p.image} 
-                      alt={p.name} // Use name from API
+                      alt={p.name}
                       className="w-full h-full object-cover hover:scale-105 transition" 
                     />
                   </div>
                   <div className="flex flex-col flex-grow p-4">
-                    <h2 className="text-lg font-semibold text-[#3e2f26] mb-1">{p.name}</h2> {/* Use name from API */}
+                    <h2 className="text-lg font-semibold text-[#3e2f26] mb-1">{p.name}</h2>
                     <p className="text-sm text-[#5a4b3f] mb-3 leading-snug">{p.description}</p>
+
+                    {/* Product Details Row */}
+                    <div className="flex items-center justify-between mb-3">
+                      {/* Weight Display */}
+                      <div className="flex items-center gap-1 text-sm text-[#5a4b3f]">
+                        <Weight className="w-4 h-4" />
+                        <span>{p.weight || 'N/A'} gm</span>
+                      </div>
+                      
+                      {/* Category */}
+                      <span className="bg-[#e5d5b3] text-[#3e2f26] px-2 py-1 text-xs rounded-full">
+                        {p.category}
+                      </span>
+                    </div>
+
+                    {/* Stock Status */}
+                    {p.stock !== undefined && (
+                      <div className="mb-3">
+                        <div className={`text-xs font-medium px-2 py-1 rounded-full ${
+                          p.stock === 0 
+                            ? 'text-red-800 bg-red-100' 
+                            : p.stock < 10 
+                            ? 'text-orange-800 bg-orange-100'
+                            : 'text-green-800 bg-green-100'
+                        }`}>
+                          {p.stock === 0 ? 'Out of Stock' : p.stock < 10 ? 'Low Stock' : 'In Stock'} ({p.stock} units)
+                        </div>
+                      </div>
+                    )}
 
                     {/* Quantity Selector */}
                     <div className="flex items-center justify-center mt-2 space-x-3">
                       <button 
-                        onClick={() => decreaseQty(p._id)} // Use _id from API
-                        className="p-2 bg-[#e5d5b3] rounded-full hover:bg-[#d9b382]"
+                        onClick={() => decreaseQty(p._id)}
+                        className="p-2 bg-[#e5d5b3] rounded-full hover:bg-[#d9b382] transition-colors"
+                        disabled={p.stock === 0}
                       >
                         <Minus className="w-4 h-4 text-[#3e2f26]" />
                       </button>
                       <span className="font-semibold text-[#3e2f26] text-lg">
-                        {quantities[p._id] || 1} {/* Use _id from API */}
+                        {quantities[p._id] || 1}
                       </span>
                       <button 
-                        onClick={() => increaseQty(p._id)} // Use _id from API
-                        className="p-2 bg-[#e5d5b3] rounded-full hover:bg-[#d9b382]"
+                        onClick={() => increaseQty(p._id)}
+                        className="p-2 bg-[#e5d5b3] rounded-full hover:bg-[#d9b382] transition-colors"
+                        disabled={p.stock === 0 || (quantities[p._id] || 1) >= (p.stock || 1)}
                       >
                         <Plus className="w-4 h-4 text-[#3e2f26]" />
                       </button>
@@ -254,13 +287,18 @@ function OurProduct() {
 
                     <div className="mt-4 flex items-center justify-between">
                       <span className="bg-gradient-to-r from-[#d9b382] to-[#b7c6a0] text-[#3e2f26] font-bold px-3 py-1 text-sm rounded-full">
-                        ₹{p.price} / kg
+                        ₹{p.price}
                       </span>
                       <button
                         onClick={() => handleBuyClick(p)}
-                        className="bg-[#3e2f26] text-[#f3ede2] py-2 px-4 text-sm rounded-md hover:bg-[#2b251f] transition"
+                        disabled={p.stock === 0}
+                        className={`py-2 px-4 text-sm rounded-md transition ${
+                          p.stock === 0
+                            ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                            : 'bg-[#3e2f26] text-[#f3ede2] hover:bg-[#2b251f]'
+                        }`}
                       >
-                        Buy Now
+                        {p.stock === 0 ? 'Out of Stock' : 'Buy Now'}
                       </button>
                     </div>
                   </div>

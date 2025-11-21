@@ -10,6 +10,7 @@ function AddProduct() {
     image: '',
     price: '',
     stock: '',
+    weight: '',
     category: ''
   });
 
@@ -38,6 +39,9 @@ function AddProduct() {
       newErrors.name = 'Product name is required';
     }
 
+    if (!formData.weight || isNaN(formData.weight) || Number(formData.weight) <= 0) {
+      newErrors.weight = 'Valid weight is required';
+    }
     if (!formData.price || isNaN(formData.price) || Number(formData.price) <= 0) {
       newErrors.price = 'Valid price is required';
     }
@@ -76,6 +80,7 @@ function AddProduct() {
       // Prepare product data
       const productData = {
         ...formData,
+        weight: Number(formData.weight),
         price: Number(formData.price),
         stock: Number(formData.stock),
       };
@@ -86,7 +91,7 @@ function AddProduct() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include", 
+        credentials: "include",
         body: JSON.stringify(productData),
       });
 
@@ -102,6 +107,7 @@ function AddProduct() {
         image: "",
         price: "",
         stock: "",
+        weight: "",
         category: "",
       });
     } catch (error) {
@@ -114,16 +120,12 @@ function AddProduct() {
 
 
   const categories = [
-    'Electronics',
-    'Clothing',
-    'Books',
-    'Home & Garden',
-    'Sports',
-    'Beauty',
-    'Toys',
-    'Food & Beverages',
-    'Other'
-  ];
+  'Mushroom',
+  'Flower Tea',
+  'Herbal',
+  'Seeds'
+];
+
 
   return (
     <>
@@ -263,6 +265,25 @@ function AddProduct() {
 
                 {/* Category */}
                 <div>
+                  <div>
+                    <label htmlFor="weight" className="block text-sm font-medium text-gray-700 mb-2">
+                      Weight *
+                    </label>
+                    <input
+                      type="text"
+                      id="weight"
+                      name="weight"
+                      value={formData.weight}
+                      onChange={handleChange}
+                      placeholder="xxx gm"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#8B7355] focus:border-[#8B7355] transition-colors ${errors.weight ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                    />
+                    {errors.weight && (
+                      <p className="mt-1 text-sm text-red-600">{errors.weight}</p>
+                    )}
+                  </div>
+
                   <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
                     Category
                   </label>
