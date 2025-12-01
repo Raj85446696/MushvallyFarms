@@ -114,7 +114,7 @@ function OurProduct() {
   const openRazorpayPopup = (order) => {
     const token = localStorage.getItem("token");
     const options = {
-      key: "rzp_test_RZbWROZOjz6zOD",
+      key: "rzp_test_RkfAaRs83PNKJl",
       amount: order.amount,
       currency: order.currency,
       name: "Organic Store",
