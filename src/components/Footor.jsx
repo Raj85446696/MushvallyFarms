@@ -181,7 +181,7 @@ function Footor() {
                   Mushvalley Farms • 123 Farm Road • Green Valley, CA 90210
                 </p>
                 <p className="text-xs text-[#b7c6a0] mt-1">
-                  contact@mushvalleyfarms.com • (+91) 123-4567
+                  contact : mushvalleyfarms@gmail.com • (+91) 9457279085
                 </p>
               </div>
               
