@@ -66,7 +66,7 @@ function AddProduct() {
       return false;
     }
   };
-
+  const token = localStorage.getItem("token");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -90,6 +90,7 @@ function AddProduct() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         credentials: "include",
         body: JSON.stringify(productData),

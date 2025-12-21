@@ -73,6 +73,7 @@ function ListProduct() {
     return matchesSearch && matchesCategory;
   });
 
+  const token = localStorage.getItem("token");
   const handleDelete = async (productId) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
@@ -82,6 +83,7 @@ function ListProduct() {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
           },
           credentials: 'include',
         });
