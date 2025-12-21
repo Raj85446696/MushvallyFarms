@@ -77,7 +77,7 @@ function Signup() {
           });
           toast.success("Signup successful! 🎉");
           localStorage.setItem("user", JSON.stringify(data.user));
-          navigate("/");
+          navigate("/login");
         } else {
           toast.error(data.message || "Signup failed. Please try again ❌");
         }
