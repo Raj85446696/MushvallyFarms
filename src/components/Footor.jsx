@@ -99,7 +99,7 @@ function Footor() {
                 <div className="flex justify-center md:justify-start space-x-5">
                   {/* Instagram */}
                   <a
-                    href="https://instagram.com/mushvalleyfarms"
+                    href="https://instagram.com/mushvalley_farms"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group text-[#b7c6a0] hover:text-white transition-all duration-300 transform hover:scale-110"
@@ -178,7 +178,7 @@ function Footor() {
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="text-center md:text-left">
                 <p className="text-xs text-[#b7c6a0]">
-                  Mushvalley Farms • 123 Farm Road • Green Valley, CA 90210
+                  MushvalleyFarms • Mainpuri UttarPradesh, India - 205001
                 </p>
                 <p className="text-xs text-[#b7c6a0] mt-1">
                   contact : mushvalleyfarms@gmail.com • (+91) 9457279085
