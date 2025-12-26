@@ -54,9 +54,9 @@ function App() {
 
         {/* ✅ User routes */}
         <Route path="/ourproduct" element={
-          <ProtectedRoute allowedRoles={["user"]}>
+          <PublicRoute>
             <OurProduct />
-          </ProtectedRoute>
+          </PublicRoute>
         }
         />
 
