@@ -53,16 +53,37 @@ const Navbar = () => {
               <img
                 src={logo}
                 alt="Mushvalley Farms Logo"
-                className="w-20 h-20 object-contain transition-all duration-300 group-hover:scale-105"
+                className="
+    w-10 h-10
+    sm:w-12 sm:h-12
+    md:w-20 md:h-20
+    object-contain
+    transition-all duration-300
+    group-hover:scale-105
+  "
               />
             </div>
-            
+
             {/* Brand Text with professional typography */}
-            <div className="flex flex-col leading-tight">
-              <span className="text-2xl font-bold text-[#d9b382] tracking-tight font-serif group-hover:text-[#e5c9a1] transition-colors duration-300">
+            <div className="flex flex-col leading-tight ml-2">
+              <span
+                className="
+      text-sm
+      sm:text-base
+      md:text-2xl
+      font-bold
+      text-[#d9b382]
+      tracking-tight
+      font-serif
+      transition-colors duration-300
+      group-hover:text-[#e5c9a1]
+    "
+              >
                 Mushvalley Farms
               </span>
-              <span className="text-xs font-cursive text-[#b7c6a0] tracking-wider mt-0.5">
+
+              {/* Hide tagline on very small screens */}
+              <span className="hidden sm:block text-xs font-cursive text-[#b7c6a0] tracking-wider">
                 Since <span className="italic">2025</span>
               </span>
             </div>
@@ -120,9 +141,8 @@ const Navbar = () => {
             <button
               ref={btnRef}
               onClick={handleMobileMenuClick}
-              className={`focus:outline-none relative overflow-hidden transition-all duration-300 ease-in-out ${
-                isOpen ? "rotate-90 scale-110 bg-[#4a392f]" : "rotate-0 scale-100"
-              } p-2 rounded-lg`}
+              className={`focus:outline-none relative overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "rotate-90 scale-110 bg-[#4a392f]" : "rotate-0 scale-100"
+                } p-2 rounded-lg`}
               style={{ width: 38, height: 38 }}
               aria-label="Open menu"
             >
@@ -155,11 +175,10 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden bg-[#3e2f26] border-t border-[#4a392f] origin-top transform transition-all duration-500 ease-in-out ${
-          isOpen
-            ? "max-h-96 opacity-100 scale-y-100"
-            : "max-h-0 opacity-0 scale-y-0"
-        } overflow-hidden`}
+        className={`md:hidden bg-[#3e2f26] border-t border-[#4a392f] origin-top transform transition-all duration-500 ease-in-out ${isOpen
+          ? "max-h-96 opacity-100 scale-y-100"
+          : "max-h-0 opacity-0 scale-y-0"
+          } overflow-hidden`}
       >
         <div className="space-y-1 px-4 pb-4 pt-2">
           <a href="/" className="block py-3 px-4 hover:text-[#d9b382] hover:bg-[#4a392f] rounded-lg transition-all duration-300 font-medium">
